@@ -1,15 +1,24 @@
-import express from 'express';
+import dotEnv from "dotenv";
+import { app } from "./app";
+import dbConnect from "./db/dbConnect";
+import { error } from "console";
 
-const app = express();
-const PORT:Number=3000;
-
-// Handling GET / Request
-app.get('/', (req, res) => {
-    res.send('Welcome to typescript backend!');
+dotEnv.config({
+    path: "./.env"
 })
 
-// Server setup
-app.listen(PORT,() => {
-    console.log('The application is listening '
-          + 'on port http://localhost:'+PORT);
-})
+dbConnect()
+ .then(()=>{
+     console.log("Connected to the database!");
+     app.listen(process.env.PORT, () => {
+         console.log(`Server running on port ${process.env.PORT}`);
+     });
+     app.on("error",(error)=>{
+         console.error("Server error:", error);
+         process.exit(1);
+     })
+ })
+ .catch(err => {
+     console.error("Failed to connect to the database:", err);
+     process.exit(1);
+ }); 
