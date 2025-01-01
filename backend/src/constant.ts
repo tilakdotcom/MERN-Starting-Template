@@ -1,1 +1,1 @@
-export const DATA_BASE = "easyOrder"
+export const DATABASE_NAME = "music"

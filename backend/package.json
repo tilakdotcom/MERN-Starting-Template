@@ -1,43 +1,45 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "this is backend for easy-order project",
-  "main": "index.js",
+  "description": "this is  fullstack project as my learning ",
+  "main": "./src/index.ts",
   "scripts": {
+    "start": "ts-node src/index.ts",
     "dev": "nodemon"
   },
   "keywords": [
-    "javascript",
-    "typescript",
     "nodejs",
-    "expressjs",
-    "mongodb",
-    "mongoose",
-    "jwt",
-    "cookies-parsel",
+    "express",
+    "nodemon",
+    "dotenv",
     "cors",
-    "dotenv"
+    "typscript",
+    "tsnode"
   ],
   "author": "tilak",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.2",
-    "nodemon": "^3.1.7",
-    "prettier": "^3.3.3"
+    "mongoose": "^8.9.2",
+    "multer": "^1.4.5-lts.1",
+    "resend": "^4.0.1",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.7",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.9.3",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.10.2",
+    "dotenv": "^16.4.7",
     "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.2"
   }
 }

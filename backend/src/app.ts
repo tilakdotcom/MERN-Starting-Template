@@ -1,32 +1,35 @@
 import express, { Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import dotEnv from "dotenv";
+
+dotEnv.config({
+  path: "./.env",
+});
 
 const app: Express = express();
 
 //middlewares
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.use(express.static("public")); //for testing purposes learn
+app.use(express.static("public"));
 
 //cors middleware
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const corsOptions: cors.CorsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  credentials: true,
+  allowedHeaders: ["content-type", "Authorization"],
+};
 
-// cookie parser middleware
+app.use(cors(corsOptions));
 
+//cookie middleware
 app.use(cookieParser());
 
-// import routes
-import userRouter from "@/routes/user.routes";
+// import routes and declarations
+import healthRoutes from "./routes/health.routes";
 
-// declarations routes
-app.use("/api/users", userRouter);
+//  use routes
+app.use("/api/v1/health", healthRoutes);
 
 export { app };

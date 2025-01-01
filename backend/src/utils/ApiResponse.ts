@@ -1,18 +1,23 @@
 export interface ApiResponseType {
+  success?: boolean;
+  data?: any;
   statusCode: number;
-  data?: any;
-  success?: boolean;
-  message: string;
+  message?: string;
 }
+
 export class ApiResponse {
-  statusCode?: number;
-  data?: any;
-  success?: boolean;
+  success: boolean;
+  statusCode: number;
   message: string;
-  constructor({ statusCode, data, success = true, message }: ApiResponseType) {
-     this.success = statusCode >= 200 && statusCode <= 300;
+  data?: any;
+  constructor({
+    data,
+    statusCode = 200,
+    message,
+  }: ApiResponseType) {
+    this.success = statusCode >= 200 && statusCode < 300;
     this.statusCode = statusCode || 200;
+    this.message = message || "Success OK";
     this.data = data;
-    this.message = message || "successFully OK";
   }
 }
