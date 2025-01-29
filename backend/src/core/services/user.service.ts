@@ -71,5 +71,7 @@ export const userPasswordChangeService = async (
   //delete old sessions
   await Session.deleteMany({ userId: user._id });
 
+  await verification.deleteOne()
+
   return { user };
 };
