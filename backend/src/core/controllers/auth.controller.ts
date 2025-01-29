@@ -6,7 +6,7 @@ import {
   setAuthCookies,
 } from "../../common/utils/cookie";
 import { BAD_REQUEST, CREATED, OK, UNAUTHORIZED } from "../../constants/http";
-import User from "../../database/models/user.model";
+import Session from "../../database/models/session.model";
 import asyncHandler from "../../middlewares/asyncHandler.middleware";
 import {
   createUserService,
@@ -46,18 +46,13 @@ export const login = asyncHandler(async (req, res) => {
 
 //logout
 export const logout = asyncHandler(async (req, res) => {
-  const userId = req.userId;
-  const user = await User.findByIdAndUpdate(
-    userId,
-    {
-      $set: {
-        refreshToken: null,
-      },
-    },
-    { new: true }
-  );
+  const sessionId = req.sessionId;
 
-  appAssert(user, BAD_REQUEST, "User not found  in the database");
+  const session = await Session.deleteOne({
+    _id: sessionId,
+  });
+
+  appAssert(session, BAD_REQUEST, "session not found  in the database");
 
   return clearAuthCookie(res).status(OK).json({
     message: "Logged out successfully",

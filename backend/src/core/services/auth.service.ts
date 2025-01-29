@@ -48,21 +48,21 @@ export const loginUserService = async (data: LoginUserData) => {
 
   appAssert(isMatch, BAD_REQUEST, "invalid login user or password details");
 
+  //create session
+  const session = await Session.create({
+    userId: user._id,
+    userAgent: data.userAgent,
+  });
+
   //generate tokens
 
   const refreshToken = generateToken(
     {
       userId: user._id,
+      sessionId: session._id,
     },
     refreshTokenSignOptions
   );
-
-  //create session
-  const session = await Session.create({
-    userId: user._id,
-    refreshToken: refreshToken,
-    userAgent: data.userAgent,
-  });
 
   const accessToken = generateToken(
     {
@@ -71,6 +71,9 @@ export const loginUserService = async (data: LoginUserData) => {
     },
     accessTokenSignOptions
   );
+
+  session.refreshToken = refreshToken;
+  await session.save({ validateBeforeSave: false });
 
   return {
     user: user.publicUser(),
@@ -89,7 +92,7 @@ export const refreshTokenService = async (refreshToken: string) => {
   appAssert(userId.userId, UNAUTHORIZED, "invalid  refresh token");
 
   const session = await Session.findOne({
-    userId: userId.userId,
+    _id: userId.sessionId,
     refreshToken: refreshToken,
   });
 

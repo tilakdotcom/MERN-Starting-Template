@@ -5,6 +5,7 @@ import ApiErrorCode from "../constants/apiErrorCode";
 import { verifyToken } from "../common/utils/jwtHelper";
 import { userDocument } from "../database/models/user.model";
 import appAssert from "../common/API/AppAssert";
+import { SessionDocument } from "../database/models/session.model";
 
 const verifyUser = asyncHandler(
   async (req: Request, _res: Response, next: NextFunction) => {
@@ -31,6 +32,7 @@ const verifyUser = asyncHandler(
       );
 
       req.userId = decoded.userId;
+      req.sessionId = decoded.sessionId;
       next();
     } catch (error) {
       console.log("Error in Middleware", error);
@@ -44,6 +46,7 @@ declare global {
   namespace Express {
     interface Request {
       userId?: userDocument["_id"];
+      sessionId? : SessionDocument["_id"]
     }
   }
 }
