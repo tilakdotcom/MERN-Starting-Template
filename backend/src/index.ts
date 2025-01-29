@@ -1,17 +1,19 @@
 import { app } from "./app";
-import dbConnect from "./db/dbConnect";
+import { PORT as PORT_ } from "./constants/getEnv";
+import dbConnect from "./database/db/dbConnect";
 
-const PORT = process.env.PORT || 5000;
+const PORT = PORT_ || 5000;
 
 dbConnect()
   .then(() => {
-    console.log("Database Connected successfully");
-    app.listen(PORT, () => {
-      console.log(`Server is running on ${PORT}`);
-    });
+    console.log("Database connected successfully");
+    app.listen(PORT),
+      () => {
+        console.log(`Server is running on port ${PORT}`);
+      };
 
     app.on("error", (error) => {
-      console.error("Server Error", error);
+      console.error(`Error occurred`, error);
       process.exit(1);
     });
   })

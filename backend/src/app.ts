@@ -1,12 +1,12 @@
-import express, { Express } from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
 import dotEnv from "dotenv";
-
 dotEnv.config({
   path: "./.env",
 });
-
+import express, { Express } from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { CORS_ORIGIN } from "./constants/getEnv";
+import errorHandler from "./middlewares/errorHandler.middleware";
 const app: Express = express();
 
 //middlewares
@@ -16,9 +16,8 @@ app.use(express.static("public"));
 
 //cors middleware
 const corsOptions: cors.CorsOptions = {
-  origin: process.env.CORS_ORIGIN,
+  origin: CORS_ORIGIN,
   credentials: true,
-  allowedHeaders: ["content-type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
@@ -26,10 +25,15 @@ app.use(cors(corsOptions));
 //cookie middleware
 app.use(cookieParser());
 
-// import routes and declarations
-import healthRoutes from "./routes/health.routes";
+// import routes and declaratio
+import healthRoutes from "./core/routes/health.routes";
+import authRoutes from "./core/routes/auth.routes";
 
 //  use routes
-app.use("/api/v1/health", healthRoutes);
+app.use("/api/v1/heath", healthRoutes);
+app.use("/api/v1/auth", authRoutes);
+
+
+app.use(errorHandler);
 
 export { app };

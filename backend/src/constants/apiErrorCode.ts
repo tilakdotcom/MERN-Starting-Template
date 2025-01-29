@@ -1,0 +1,7 @@
+const enum ApiErrorCode {
+  INVALID_ACCCESS_TOKEN = "INVALID_ACCCESS_TOKEN",
+  NOT_FOUND = "NOT_FOUND",
+  INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
+}
+
+export default ApiErrorCode;
