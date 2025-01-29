@@ -6,21 +6,13 @@ export interface userDocument extends Document {
   email: string;
   password: string;
   verifiedEmail: boolean;
-  resetPasswordToken: string | undefined;
-  resetPasswordExpires: Date | undefined;
-  emailVerifiedToken: string | undefined;
-  emailVerifiedExpires: Date | undefined;
-  refreshToken: string | undefined;
+  avatar?: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
   publicUser(): Pick<
     userDocument,
     | "user"
     | "email"
     | "verifiedEmail"
-    | "resetPasswordToken"
-    | "resetPasswordExpires"
-    | "emailVerifiedToken"
-    | "emailVerifiedExpires"
     | "comparePassword"
     | "createAt"
     | "updatedAt"
@@ -40,9 +32,6 @@ const userSchema = new Schema<userDocument>(
       required: true,
       unique: true,
     },
-    refreshToken: {
-      type: String,
-    },
     password: {
       type: String,
       required: true,
@@ -51,18 +40,10 @@ const userSchema = new Schema<userDocument>(
       type: Boolean,
       default: false,
     },
-    resetPasswordToken: {
+    avatar: {
       type: String,
-    },
-    resetPasswordExpires: {
-      type: Date,
-    },
-    emailVerifiedToken: {
-      type: String,
-    },
-    emailVerifiedExpires: {
-      type: Date,
-    },
+      default: null,
+    }
   },
   {
     timestamps: true,
@@ -85,7 +66,6 @@ userSchema.methods.publicUser = function () {
   const user = this.toObject();
   delete user.password;
   delete user.__v;
-  delete user.refreshToken;
   return user;
 };
 

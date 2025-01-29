@@ -22,12 +22,10 @@ export const CORS_ORIGIN = getEnv("CORS_ORIGIN");
 export const ACCESS_TOKEN_SECRET = getEnv("ACCESS_TOKEN_SECRET");
 export const REFRESH_TOKEN_SECRET = getEnv("REFRESH_TOKEN_SECRET");
 
-
-
-
-// export const CLOUDINARY_API_NAME= getEnv("CLOUDINARY_API_NAME");
-// export const CLOUDINARY_API_KEY= getEnv("CLOUDINARY_API_KEY");
-// export const CLOUDINARY_API_SECRET= getEnv("CLOUDINARY_API_SECRET");
+// cloudinary
+export const CLOUDINARY_API_NAME= getEnv("CLOUDINARY_API_NAME");
+export const CLOUDINARY_API_KEY= getEnv("CLOUDINARY_API_KEY");
+export const CLOUDINARY_API_SECRET= getEnv("CLOUDINARY_API_SECRET");
 
 
 
