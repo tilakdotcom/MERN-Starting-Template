@@ -1,4 +1,5 @@
 import appAssert from "../../common/API/AppAssert";
+import { Now } from "../../common/utils/customTime";
 import {
   accessTokenSignOptions,
   generateToken,
@@ -95,7 +96,7 @@ export const refreshTokenService = async (refreshToken: string) => {
     _id: userId.sessionId,
     refreshToken: refreshToken,
     expiresAt: {
-      $gte: new Date(),
+      $gte: Now(),
     }
   });
 

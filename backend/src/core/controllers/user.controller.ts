@@ -1,11 +1,12 @@
 import appAssert from "../../common/API/AppAssert";
 import { emailSchema } from "../../common/schemas/auth";
-import { mongoIdSchema, passwordChangeSchema } from "../../common/schemas/user";
+import { passwordChangeSchema } from "../../common/schemas/user";
 import { BAD_REQUEST, OK } from "../../constants/http";
 import asyncHandler from "../../middlewares/asyncHandler.middleware";
 import { validateFileImage } from "../../middlewares/file.middleware";
 import {
   userAvatarService,
+  userPasswordChangeService,
   userPasswordResetRequestService,
 } from "../services/user.service";
 
@@ -35,8 +36,19 @@ export const userResetPasswordHandler = asyncHandler(async (req, res) => {
   });
 });
 
-export const userPasswordChangeHandler = asyncHandler(async(req, res)=>{
+export const userPasswordChangeHandler = asyncHandler(async (req, res) => {
   const body = passwordChangeSchema.parse({
+    ...req.body,
     token: req.params.token,
-  })
-})
+  });
+
+  const { user } = await userPasswordChangeService({
+    newPassword: body.newPassword,
+    passwordResetToken: body.token,
+  });
+
+  return res.status(OK).json({
+    message: "Password reset successfully",
+    data: user,
+  });
+});
