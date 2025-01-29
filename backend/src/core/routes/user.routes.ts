@@ -1,13 +1,21 @@
 import { Router } from "express";
-import { userProfileImageHandle } from "../controllers/user.controller";
+import { userPasswordChangeHandler, userProfileImageHandler, userResetPasswordHandler } from "../controllers/user.controller";
 import upload from "../../middlewares/multer.middleware";
+import verifyUser from "../../middlewares/auth.middleware";
 
 const router = Router()
 
 
-// routes
-router.route("/profile").patch(upload.single("avatar"),userProfileImageHandle)
 
+
+
+router.route("/forgot-password").get(userResetPasswordHandler)
+
+router.use(verifyUser)
+// routes
+router.route("/profile").patch(upload.single("avatar"),userProfileImageHandler)
+
+router.route("/reset-password/:token").get(userPasswordChangeHandler)
 
 
 
