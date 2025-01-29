@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { passwordSchema } from "./auth";
 
 export const imageSchema = z.object({
   mimetype: z
@@ -20,4 +21,12 @@ export const imageSchema = z.object({
   destination: z.string(),
   filename: z.string().optional(),
   path: z.string(),
+});
+
+export const mongoIdSchema = z.string().min(4);
+
+export const passwordChangeSchema = z.object({
+  newPassword: passwordSchema,
+  token: mongoIdSchema,
+  userId: mongoIdSchema,
 });
