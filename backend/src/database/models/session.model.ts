@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { thirtyDaysFromNow } from "../../common/utils/customTime";
-import { string } from "zod";
 
 export interface SessionDocument extends Document {
   userId: mongoose.Types.ObjectId;
@@ -26,7 +25,7 @@ const sessionSchema = new Schema(
       default: thirtyDaysFromNow,
     },
     refreshToken: {
-      type: string,
+      type: String,
     },
   },
   {

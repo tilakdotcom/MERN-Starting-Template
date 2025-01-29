@@ -28,7 +28,7 @@ export const signup = asyncHandler(async (req, res) => {
 
 //login
 export const login = asyncHandler(async (req, res) => {
-  const userAgent = req.headers["User-Agent"];
+  const userAgent = req.headers["user-agent"]
   const body = loginSchema.parse({
     ...req.body,
     userAgent: userAgent,
