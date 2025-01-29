@@ -7,6 +7,7 @@ import { verificationCode } from "../../common/enum/verificationCode";
 import { fifteenMinuteFromNow, Now } from "../../common/utils/customTime";
 import { passwordHasher } from "../../common/utils/bcryptjs";
 import Session from "../../database/models/session.model";
+import ApiError from "../../common/API/ApiError";
 
 type UserAvatar = {
   avatar: string;
@@ -33,6 +34,14 @@ export const userPasswordResetRequestService = async (
 ) => {
   const user = await User.findOne({ email: data.email });
   appAssert(user, BAD_REQUEST, "user not found");
+
+  const count = await VerifyCation.countDocuments({ userId: user._id });
+  if (count > 2) {
+    throw new ApiError(
+      BAD_REQUEST,
+      "You have exceeded the maximum number of documents"
+    );
+  }
 
   const passwordResetVerificationCode = await VerifyCation.create({
     userId: user._id,
@@ -71,7 +80,7 @@ export const userPasswordChangeService = async (
   //delete old sessions
   await Session.deleteMany({ userId: user._id });
 
-  await verification.deleteOne()
+  await verification.deleteOne();
 
   return { user };
 };
