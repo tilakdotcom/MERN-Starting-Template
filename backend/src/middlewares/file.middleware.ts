@@ -1,4 +1,4 @@
-import { imageSchema } from "../common/schemas/quarrel";
+import { imageSchema } from "../common/schemas/user";
 
 export const validateFileImage = (file: Express.Multer.File) => {
   const image = imageSchema.parse({

@@ -94,6 +94,9 @@ export const refreshTokenService = async (refreshToken: string) => {
   const session = await Session.findOne({
     _id: userId.sessionId,
     refreshToken: refreshToken,
+    expiresAt: {
+      $gte: new Date(),
+    }
   });
 
   appAssert(
