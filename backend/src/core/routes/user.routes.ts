@@ -5,10 +5,6 @@ import verifyUser from "../../middlewares/auth.middleware";
 
 const router = Router()
 
-
-
-
-
 router.route("/forgot-password").get(userResetPasswordHandler)
 
 router.route("/reset-password/:token").patch(userPasswordChangeHandler)

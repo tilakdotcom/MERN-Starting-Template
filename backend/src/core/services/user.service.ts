@@ -35,7 +35,12 @@ export const userPasswordResetRequestService = async (
   const user = await User.findOne({ email: data.email });
   appAssert(user, BAD_REQUEST, "user not found");
 
-  const count = await VerifyCation.countDocuments({ userId: user._id });
+  const count = await VerifyCation.countDocuments({
+    userId: user._id,
+    expiresAt: {
+      $gte: Now(),
+    },
+  });
   if (count > 2) {
     throw new ApiError(
       BAD_REQUEST,
@@ -80,7 +85,7 @@ export const userPasswordChangeService = async (
   //delete old sessions
   await Session.deleteMany({ userId: user._id });
 
-  await verification.deleteOne();
+  await VerifyCation.deleteMany({ userId: user._id });
 
   return { user };
 };
