@@ -1,6 +1,10 @@
 import User from "../../database/models/user.model";
 import appAssert from "../../common/API/AppAssert";
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "../../constants/http";
+import {
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  UNAUTHORIZED,
+} from "../../constants/http";
 import uploadFileToCloudinary from "../../common/utils/cloudinary";
 import VerifyCation from "../../database/models/vaerifiacation.model";
 import { verificationCode } from "../../common/enum/verificationCode";
@@ -62,6 +66,7 @@ type UserPasswordChangeServiceType = {
   passwordResetToken: string;
 };
 
+
 export const userPasswordChangeService = async (
   data: UserPasswordChangeServiceType
 ) => {
@@ -89,3 +94,28 @@ export const userPasswordChangeService = async (
 
   return { user };
 };
+
+
+export const userVerifyEmailRequestService = async (userId: string) => {
+  const count = await VerifyCation.countDocuments({ userId: userId });
+
+  if (count >= 2) {
+    throw new ApiError(
+      BAD_REQUEST,
+      "You have already reached the maximum number of limit try again laterr."
+    );
+  }
+
+  const verification = await VerifyCation.create({
+    userId: userId,
+    expiresAt: fifteenMinuteFromNow(),
+    type: verificationCode.VERIFICATION_EMAIL,
+  });
+
+  // sent email
+  return {
+    verification,
+  };
+};
+
+

@@ -8,6 +8,7 @@ import {
   userAvatarService,
   userPasswordChangeService,
   userPasswordResetRequestService,
+  userVerifyEmailRequestService,
 } from "../services/user.service";
 
 export const userProfileImageHandler = asyncHandler(async (req, res) => {
@@ -52,3 +53,18 @@ export const userPasswordChangeHandler = asyncHandler(async (req, res) => {
     data: user,
   });
 });
+
+export const userVerifyEmailRequestHandler = asyncHandler(async (req, res) => {
+  const userId = req.userId;
+
+  const { verification } = await userVerifyEmailRequestService(
+    userId as string
+  );
+
+  return res.status(OK).json({
+    message: "email verification successfully send",
+    data: verification._id as string,
+  });
+});
+
+export const userVerifyEmailHandler = asyncHandler(async (req, res) => {});
