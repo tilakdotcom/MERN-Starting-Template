@@ -27,7 +27,9 @@ export const CLOUDINARY_API_NAME= getEnv("CLOUDINARY_API_NAME");
 export const CLOUDINARY_API_KEY= getEnv("CLOUDINARY_API_KEY");
 export const CLOUDINARY_API_SECRET= getEnv("CLOUDINARY_API_SECRET");
 
-
+//email 
+export const MAILTRAP_TOKEN=getEnv("MAILTRAP_TOKEN");
+export const USER_EMAIL= getEnv("USER_EMAIL")
 
 
 

@@ -9,6 +9,7 @@ import {
 import { BAD_REQUEST, UNAUTHORIZED } from "../../constants/http";
 import Session from "../../database/models/session.model";
 import User from "../../database/models/user.model";
+import { sendWelcomeEmail } from "../../mail/mailer";
 
 type CreateUserData = {
   email: string;
@@ -26,6 +27,9 @@ export const createUserService = async (data: CreateUserData) => {
     email: data.email,
     password: data.password,
   });
+
+  // generate welcome email
+  sendWelcomeEmail(data.username, data.email);
 
   return {
     user: user.publicUser(),
@@ -97,7 +101,7 @@ export const refreshTokenService = async (refreshToken: string) => {
     refreshToken: refreshToken,
     expiresAt: {
       $gte: Now(),
-    }
+    },
   });
 
   appAssert(

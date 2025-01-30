@@ -12,6 +12,11 @@ import { fifteenMinuteFromNow, Now } from "../../common/utils/customTime";
 import { passwordHasher } from "../../common/utils/bcryptjs";
 import Session from "../../database/models/session.model";
 import ApiError from "../../common/API/ApiError";
+import {
+  sendForgotPasswordEmail,
+  sendVerificationEmail,
+} from "../../mail/mailer";
+import { CLIENT_URI } from "../../constants/getEnv";
 
 type UserAvatar = {
   avatar: string;
@@ -57,7 +62,11 @@ export const userPasswordResetRequestService = async (
     type: verificationCode.PASSWORD_RESET,
     expiresAt: fifteenMinuteFromNow(),
   });
-  // TODO sent email verification
+
+  const url = `${CLIENT_URI}/reset-password/${passwordResetVerificationCode._id}`;
+
+  sendForgotPasswordEmail(data.email, url);
+
   return { passwordResetVerificationCode };
 };
 
@@ -98,6 +107,9 @@ export const userPasswordChangeService = async (
 };
 
 export const userVerifyEmailRequestService = async (userId: string) => {
+  const user = await User.findOne({ _id: userId });
+  appAssert(user, BAD_REQUEST, "User not found");
+
   const count = await VerifyCation.countDocuments({ userId: userId });
 
   if (count >= 2) {
@@ -114,6 +126,8 @@ export const userVerifyEmailRequestService = async (userId: string) => {
   });
 
   // sent email
+  const url = `${CLIENT_URI}/reset-password/${verification._id}`;
+  sendVerificationEmail(user.email, url);
   return {
     verification,
   };
@@ -138,5 +152,5 @@ export const userVerifyEmailService = async (id: string) => {
     type: verificationCode.VERIFICATION_EMAIL,
   });
 
-  return {user : user.publicUser()}
+  return { user: user.publicUser() };
 };
