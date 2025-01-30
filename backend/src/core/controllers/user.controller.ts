@@ -1,6 +1,6 @@
 import appAssert from "../../common/API/AppAssert";
 import { emailSchema } from "../../common/schemas/auth";
-import { passwordChangeSchema } from "../../common/schemas/user";
+import { mongoIdSchema, passwordChangeSchema } from "../../common/schemas/user";
 import { BAD_REQUEST, OK } from "../../constants/http";
 import asyncHandler from "../../middlewares/asyncHandler.middleware";
 import { validateFileImage } from "../../middlewares/file.middleware";
@@ -9,6 +9,7 @@ import {
   userPasswordChangeService,
   userPasswordResetRequestService,
   userVerifyEmailRequestService,
+  userVerifyEmailService,
 } from "../services/user.service";
 
 export const userProfileImageHandler = asyncHandler(async (req, res) => {
@@ -67,4 +68,11 @@ export const userVerifyEmailRequestHandler = asyncHandler(async (req, res) => {
   });
 });
 
-export const userVerifyEmailHandler = asyncHandler(async (req, res) => {});
+export const userVerifyEmailHandler = asyncHandler(async (req, res) => {
+  const verificationId = mongoIdSchema.parse(req.params.verificationId);
+  const { user } = await userVerifyEmailService(verificationId);
+  return res.status(OK).json({
+    message: "user verified successfully",
+    data: user,
+  });
+});

@@ -66,7 +66,6 @@ type UserPasswordChangeServiceType = {
   passwordResetToken: string;
 };
 
-
 export const userPasswordChangeService = async (
   data: UserPasswordChangeServiceType
 ) => {
@@ -90,11 +89,13 @@ export const userPasswordChangeService = async (
   //delete old sessions
   await Session.deleteMany({ userId: user._id });
 
-  await VerifyCation.deleteMany({ userId: user._id });
+  await VerifyCation.deleteMany({
+    userId: user._id,
+    type: verificationCode.PASSWORD_RESET,
+  });
 
   return { user };
 };
-
 
 export const userVerifyEmailRequestService = async (userId: string) => {
   const count = await VerifyCation.countDocuments({ userId: userId });
@@ -118,4 +119,24 @@ export const userVerifyEmailRequestService = async (userId: string) => {
   };
 };
 
+export const userVerifyEmailService = async (id: string) => {
+  const verification = await VerifyCation.findOne({
+    _id: id,
+    expiresAt: { $gte: Now() },
+  });
+  appAssert(verification, BAD_REQUEST, "Token has expired");
 
+  const user = await User.findOne({ _id: verification.userId });
+  appAssert(user, BAD_REQUEST, "Token has expired");
+
+  user.verifiedEmail = true;
+  await user.save({ validateBeforeSave: false });
+
+  //deleting the verification
+  await VerifyCation.deleteMany({
+    userId: user._id,
+    type: verificationCode.VERIFICATION_EMAIL,
+  });
+
+  return {user : user.publicUser()}
+};
