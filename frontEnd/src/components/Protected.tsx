@@ -1,17 +1,14 @@
 import { useAuth } from "@/hooks/useAuth";
-import { Navigate, useLocation, Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 export function RouteForOnlyAuthenticated() {
   const { user } = useAuth();
-  const location = useLocation();
-
 
   if (!user?.data?.user) {
     return (
-      <Navigate
-        to="/login"
-        replace
-        state={{ redirectUrl: location.pathname }}
+      <Navigate 
+        to="/login" 
+        replace 
       />
     );
   }
@@ -21,6 +18,7 @@ export function RouteForOnlyAuthenticated() {
 
 export const RouteForOnlyNotAuthenticated = () => {
   const { user } = useAuth();
+
   if (user?.data?.user) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -30,8 +28,8 @@ export const RouteForOnlyNotAuthenticated = () => {
 
 export const Loader = () => {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="relative w-16 h-16 animate-spin rounded-full border-4 border-green-500 border-t-transparent"></div>
+    <div className="flex justify-center items-center min-h-screen bg-gray-900">
+      <div className="relative w-16 h-16 rounded-full animate-spin border-4 border-t-4 border-t-transparent border-green-500"></div>
     </div>
   );
 };

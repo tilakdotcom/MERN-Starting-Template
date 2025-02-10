@@ -10,5 +10,5 @@ export type SignupData = {
 
 export type ResetPasswordData ={
   password: string;
-  code: string;
+  token: string;
 }

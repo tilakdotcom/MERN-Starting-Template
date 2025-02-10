@@ -17,16 +17,15 @@ export default function App() {
       <Routes>
         <Route path="/" element={<RouteForOnlyAuthenticated />}>
           <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/email-verify/:code" element={<VerifyEmailPage />} />
         </Route>
-
         <Route path="/" element={<RouteForOnlyNotAuthenticated />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />{" "}
-          <Route path="/password-reset" element={<VerifyAndPasswordPage />} />
+          <Route path="/reset-password/:token" element={<VerifyAndPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordLinkPage />} />
         </Route>
+        <Route path="/email-verify/:code" element={<VerifyEmailPage />} />
       </Routes>
     </>
   );

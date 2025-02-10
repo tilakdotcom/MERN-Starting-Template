@@ -12,30 +12,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { passwordSchema } from "@/schemas/passwordSchma";
-import { useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { resetPasswordRequest } from "@/lib/api";
 import { errorToast, successToast } from "@/lib/toast";
+import { useParams } from "react-router-dom";
 
 export default function VerifyAndPasswordPage() {
-  const [searchParams] = useSearchParams();
-  const code = searchParams.get('code');
-  const exp = searchParams.get("exp");
-
-  if (!code || !exp) {
-    console.log("not valid link");
-  }
+  const params = useParams();
 
   const {
     mutate: resetPassword,
     isPending,
     isError,
+    error
   } = useMutation({
     mutationFn: resetPasswordRequest,
-    onSuccess: ()=>{
-      successToast("Password reset Successfully")
-    }
-  })
+    onSuccess: () => {
+      successToast("Password reset Successfully");
+    },
+  });
 
   const form = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),
@@ -43,22 +38,15 @@ export default function VerifyAndPasswordPage() {
       password: "",
     },
   });
-const now = Date.now();
 
   async function onSubmit(values: z.infer<typeof passwordSchema>) {
-
-    if(Number.parseInt(exp || "0") < now){
-      errorToast("Link expired");
-      return;
-    }
-
     resetPassword({
-      code: code || "",
+      token: params.token as string,
       password: values.password,
-    })
-    console.log(values.password);
+    });
   }
-  if(isError){
+  if (isError) {
+    console.error("Error during password reset", error);
     errorToast("Link expired or Invalid link");
   }
   return (

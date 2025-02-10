@@ -3,10 +3,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { verifyEmailRequest } from "@/lib/api";
 import { errorToast, successToast } from "@/lib/toast";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const VerifyEmailPage = () => {
-  const naviagte = useNavigate();
   const { code } = useParams();
   const { user, isPending: loading } = useAuth();
 
@@ -18,7 +17,6 @@ const VerifyEmailPage = () => {
   } = useMutation({
     mutationFn: verifyEmailRequest,
     onSuccess: () => {
-      naviagte("/", { replace: true });
       successToast("verified successfully ");
     },
   });

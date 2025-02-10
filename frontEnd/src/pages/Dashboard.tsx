@@ -27,14 +27,18 @@ export default function UserDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white flex">
       <aside className="w-1/4 bg-gray-800 p-6 shadow-2xl">
-        <h2 className="text-3xl font-bold text-white border-b-2 border-blue-500 pb-2">Dashboard</h2>
+        <h2 className="text-3xl font-bold text-white border-b-2 border-blue-500 pb-2">
+          Dashboard
+        </h2>
         <nav className="mt-8">
           <ul>
             <li className="mb-4">
               <button
                 onClick={() => setActive("home")}
                 className={`text-lg block p-3 rounded-lg font-semibold transition-all ${
-                  active === "home" ? "bg-blue-600 text-white shadow-xl" : "text-gray-300 hover:bg-blue-500 hover:text-white"
+                  active === "home"
+                    ? "bg-blue-600 text-white shadow-xl"
+                    : "text-gray-300 hover:bg-blue-500 hover:text-white"
                 }`}
               >
                 Home
@@ -44,7 +48,9 @@ export default function UserDashboard() {
               <button
                 onClick={() => setActive("session")}
                 className={`text-lg block p-3 rounded-lg font-semibold transition-all ${
-                  active === "session" ? "bg-blue-600 text-white shadow-xl" : "text-gray-300 hover:bg-blue-500 hover:text-white"
+                  active === "session"
+                    ? "bg-blue-600 text-white shadow-xl"
+                    : "text-gray-300 hover:bg-blue-500 hover:text-white"
                 }`}
               >
                 Sessions
@@ -105,7 +111,7 @@ const UserSection = () => {
 };
 
 const SessionsList = () => {
-  const { sessions } = useSessions();
+  const { sessions = [] } = useSessions();
   const { mutate: deleteSession, isPending } = useMutation({
     mutationFn: deleteSessionRequest,
     onSuccess: () => {
@@ -118,6 +124,8 @@ const SessionsList = () => {
       queryClient.refetchQueries();
     },
   });
+
+  console.log("sessions", sessions);
 
   return (
     <div className="bg-gray-700 shadow-md rounded-lg p-6">
@@ -134,7 +142,9 @@ const SessionsList = () => {
                 } p-4 rounded-lg`}
               >
                 <div>
-                  <p className="text-sm font-semibold text-gray-200">{session.userAgent}</p>
+                  <p className="text-sm font-semibold text-gray-200">
+                    {session.userAgent}
+                  </p>
                   <p className="text-xs text-gray-400">
                     {new Date(session.createdAt).toLocaleString("en-US")}
                   </p>

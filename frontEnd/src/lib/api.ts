@@ -24,15 +24,15 @@ export const verifyEmailRequest = async (code: string) => {
 };
 
 export const forgotPasswordRequest = async (email: string) => {
-  return API.post("/auth/forgot-password", { email });
+  return API.post("/user/forgot-password", { email });
 };
 
 export const resetPasswordRequest = async (data: ResetPasswordData) => {
-  return API.patch("/auth/reset-password", data);
+  return await API.patch("/user/reset-password", data);
 };
 
-export const logoutRequest = () => {
-  return API.get("/auth/logout");
+export const logoutRequest = async () => {
+  return await API.get("/auth/logout");
 };
 
 export const userRequest = ():Promise<Data> => {
