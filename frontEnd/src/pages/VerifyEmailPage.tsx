@@ -42,7 +42,7 @@ const VerifyEmailPage = () => {
   return (
     <div className=" min-h-screen bg-green-50 flex items-center justify-center">
       <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
-        {user?.user?.emailVerified ? (
+        {user?.data.verifiedEmail ? (
           <>
             <h2 className="text-2xl font-bold text-green-600 text-center mb-4">
               You are verified.

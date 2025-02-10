@@ -17,7 +17,7 @@ router.route("/profile").patch(upload.single("avatar"),userProfileImageHandler)
 
 router.route("/verify-email-request").get(userVerifyEmailRequestHandler)
 
-router.route("/verify-email").patch(userVerifyEmailHandler)
+router.route("/verify-email/:verificationId").patch(userVerifyEmailHandler)
 
 
 

@@ -15,8 +15,12 @@ export const signupRequest = async (data: SignupData) => {
   return API.post("/auth/register", data);
 };
 
+export const verifyEmailSend = async () =>{
+  return API.get("/user/verify-email-request");
+}
+
 export const verifyEmailRequest = async (code: string) => {
-  return API.get(`/auth/verify-email/${code}`);
+  return API.patch(`/user/verify-email/${code}`);
 };
 
 export const forgotPasswordRequest = async (email: string) => {

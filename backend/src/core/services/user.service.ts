@@ -126,7 +126,7 @@ export const userVerifyEmailRequestService = async (userId: string) => {
   });
 
   // sent email
-  const url = `${CLIENT_URI}/reset-password/${verification._id}`;
+  const url = `${CLIENT_URI}/email-verify/${verification._id}`;
   sendVerificationEmail(user.email, url);
   return {
     verification,

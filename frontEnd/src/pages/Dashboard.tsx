@@ -1,5 +1,9 @@
 import queryClient from "@/config/queryClient";
-import { deleteSessionRequest, logoutRequest } from "@/lib/api";
+import {
+  deleteSessionRequest,
+  logoutRequest,
+  verifyEmailSend,
+} from "@/lib/api";
 import { errorToast, successToast } from "@/lib/toast";
 import { TSession } from "@/types/session";
 import { useMutation } from "@tanstack/react-query";
@@ -19,7 +23,6 @@ export default function UserDashboard() {
       navigate("/login"); // Redirect to login page after logout
     },
   });
-
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <aside className="w-1/4 bg-green-800 p-6">
@@ -63,6 +66,13 @@ export default function UserDashboard() {
 
 const UserSection = () => {
   const { user } = useAuth();
+  const { mutate: verifyEmailRequest } = useMutation({
+    mutationFn: verifyEmailSend,
+    onSettled: () => {
+      queryClient.clear();
+      successToast("check your email box");
+    },
+  });
   return (
     <>
       <h1 className="text-3xl font-bold text-gray-800 text-center py-4">
@@ -81,6 +91,13 @@ const UserSection = () => {
           <div className="bg-red-500 rounded-xl p-2">
             Your email is not verified. Please check your email for the
             verification link or contact support if you have questions.
+            <br />
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded-xl mt-4"
+              onClick={() => verifyEmailRequest()}
+            >
+              Verify Email
+            </button>
           </div>
         )}
       </div>
