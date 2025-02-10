@@ -16,14 +16,14 @@ import { useMutation } from "@tanstack/react-query";
 import { loginRequest } from "@/lib/api";
 import { Link, useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "@/lib/toast";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [hide, setHide] = useState(false);
 
-  const {
-    mutate: Login,
-    isPending,
-  } = useMutation({
+  const { mutate: Login, isPending } = useMutation({
     mutationFn: loginRequest,
     onSuccess: () => {
       navigate("/dashboard", { replace: true });
@@ -54,7 +54,9 @@ export default function LoginPage() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-full bg-white p-8 rounded-lg shadow-md md:space-y-3 space-y-2 h-auto"
           >
-            <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
+            <h2 className="text-2xl font-bold text-center text-gray-800">
+              Login
+            </h2>
             <p className="text-center text-gray-600">Login to your account</p>
 
             <FormField
@@ -83,23 +85,37 @@ export default function LoginPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="block md:text-base font-medium text-gray-700">
+                  <FormLabel className="block md:text-base font-medium text-gray-700 ">
                     Password
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      className="w-full px-4 py-2 rounded-md bg-gray-100 text-gray-800 border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none md:text-base"
-                      placeholder="Enter your password"
-                      autoComplete="current-password"
-                      {...field}
-                    />
+                    <div className=" flex items-center">
+                      <Input
+                        type={hide ? "text" : "password"}
+                        className="w-full px-4 py-2 rounded-md bg-gray-100 text-gray-800 border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none md:text-base
+                        select-none"
+                        placeholder="Enter your password"
+                        autoComplete="current-password"
+                        {...field}
+                      />
+                      {!hide ? (
+                        <EyeOff
+                          className="-ml-8 cursor-pointer"
+                          onClick={() => setHide(!hide)}
+                        />
+                      ) : (
+                        <Eye
+                          className="-ml-8 cursor-pointer"
+                          onClick={() => setHide(!hide)}
+                        />
+                      )}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="text-end px-1 hover:underline cursor-pointer text-xs font-bold text-blue-600">
+            <div className="text-end px-1 hover:underline cursor-pointer text-xs font-bold text-blue-600 select-none">
               <Link to={"/reset-password"}>Reset password</Link>
             </div>
             <div className="py-2 md:py-4">

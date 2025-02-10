@@ -16,10 +16,13 @@ import { signupSchma } from "@/schemas/signupSchema";
 import { useMutation } from "@tanstack/react-query";
 import { signupRequest } from "@/lib/api";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignupPage() {
   const navigate = useNavigate();
 
+  const [hide, setHide] = useState(false);
   const {
     mutate: SignUp,
     isError,
@@ -111,17 +114,31 @@ export default function SignupPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="block text-sm font-medium text-gray-700">
+                  <FormLabel className="block md:text-base font-medium text-gray-700 ">
                     Password
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      autoComplete="current-password"
-                      className="w-full px-4 py-2 rounded-md bg-gray-100 text-gray-800 border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                      placeholder="Enter your password"
-                      {...field}
-                    />
+                    <div className=" flex items-center">
+                      <Input
+                        type={hide ? "text" : "password"}
+                        className="w-full px-4 py-2 rounded-md bg-gray-100 text-gray-800 border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none md:text-base
+                        select-none"
+                        placeholder="Enter your password"
+                        autoComplete="current-password"
+                        {...field}
+                      />
+                      {!hide ? (
+                        <EyeOff
+                          className="-ml-8 cursor-pointer"
+                          onClick={() => setHide(!hide)}
+                        />
+                      ) : (
+                        <Eye
+                          className="-ml-8 cursor-pointer"
+                          onClick={() => setHide(!hide)}
+                        />
+                      )}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
