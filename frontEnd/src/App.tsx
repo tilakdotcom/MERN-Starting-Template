@@ -15,10 +15,10 @@ export default function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<RouteForOnlyAuthenticated />}>
+        <Route element={<RouteForOnlyAuthenticated />}>
           <Route path="/dashboard" element={<UserDashboard />} />
         </Route>
-        <Route path="/" element={<RouteForOnlyNotAuthenticated />}>
+        <Route element={<RouteForOnlyNotAuthenticated />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />

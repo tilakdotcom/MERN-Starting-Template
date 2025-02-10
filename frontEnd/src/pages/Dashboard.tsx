@@ -17,10 +17,11 @@ export default function UserDashboard() {
   const navigate = useNavigate();
   const { mutate: logout } = useMutation({
     mutationFn: logoutRequest,
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.clear();
+      navigate("/login", { replace: true });
       successToast("Logged out successfully");
-      navigate("/login");
+      
     },
   });
 
