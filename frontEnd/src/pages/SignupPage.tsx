@@ -35,13 +35,13 @@ export default function SignupPage() {
 
   if (isError) {
     // errorToast(error?.message || "Signup Failed!");
-    console.log(error)
+    console.log(error);
   }
 
   const form = useForm<z.infer<typeof signupSchma>>({
     resolver: zodResolver(signupSchma),
     defaultValues: {
-      username:"",
+      username: "",
       email: "",
       password: "",
     },
@@ -57,25 +57,25 @@ export default function SignupPage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full bg-green-800 p-8 rounded-lg shadow-lg space-y-4"
+            className="w-full bg-white p-8 rounded-lg shadow-lg space-y-4"
           >
-            <h2 className="text-2xl font-bold text-center text-white">
+            <h2 className="text-2xl font-bold text-center text-gray-800">
               Sign Up
             </h2>
-            <p className="text-center text-green-200">Create your account</p>
+            <p className="text-center text-gray-600">Create your account</p>
 
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="block text-sm font-medium text-green-100">
+                  <FormLabel className="block text-sm font-medium text-gray-700">
                     Username
                   </FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="current-username"
-                      className="w-full px-4 py-2 rounded-md bg-green-900 text-green-100 border border-green-700 focus:ring-2 focus:ring-green-400 focus:outline-none"
+                      className="w-full px-4 py-2 rounded-md bg-gray-100 text-gray-800 border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                       placeholder="Enter your username"
                       {...field}
                     />
@@ -90,13 +90,13 @@ export default function SignupPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="block text-sm font-medium text-green-100">
+                  <FormLabel className="block text-sm font-medium text-gray-700">
                     Email
                   </FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="current-email"
-                      className="w-full px-4 py-2 rounded-md bg-green-900 text-green-100 border border-green-700 focus:ring-2 focus:ring-green-400 focus:outline-none"
+                      className="w-full px-4 py-2 rounded-md bg-gray-100 text-gray-800 border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                       placeholder="Enter your email"
                       {...field}
                     />
@@ -111,14 +111,14 @@ export default function SignupPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="block text-sm font-medium text-green-100">
+                  <FormLabel className="block text-sm font-medium text-gray-700">
                     Password
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
                       autoComplete="current-password"
-                      className="w-full px-4 py-2 rounded-md bg-green-900 text-green-100 border border-green-700 focus:ring-2 focus:ring-green-400 focus:outline-none"
+                      className="w-full px-4 py-2 rounded-md bg-gray-100 text-gray-800 border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                       placeholder="Enter your password"
                       {...field}
                     />
@@ -131,8 +131,8 @@ export default function SignupPage() {
               <Button
                 type="submit"
                 disabled={isPending}
-                className={`w-full py-2 px-4 bg-green-500 hover:bg-green-600 text-white rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200 ease-linear ${
-                  isPending ? " cursor-not-allowed bg-green-300" : ""
+                className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ease-linear ${
+                  isPending ? " cursor-not-allowed bg-blue-300" : ""
                 }`}
               >
                 {isPending ? "Please Wait..." : "Sign Up"}
@@ -142,7 +142,7 @@ export default function SignupPage() {
               have an account?{" "}
               <Link
                 to={"/login"}
-                className="text-teal-600 cursor-pointer hover:underline"
+                className="text-blue-600 cursor-pointer hover:underline"
               >
                 Login with
               </Link>

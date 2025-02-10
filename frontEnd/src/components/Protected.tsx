@@ -1,13 +1,10 @@
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate, useLocation, Outlet } from "react-router-dom";
 
-export default function Protected() {
-  const { user, isLoading } = useAuth();
+export function RouteForOnlyAuthenticated() {
+  const { user } = useAuth();
   const location = useLocation();
 
-  if (isLoading) {
-    return <Loader />;
-  }
 
   if (!user?.data?.user) {
     return (
@@ -21,6 +18,15 @@ export default function Protected() {
 
   return <Outlet />;
 }
+
+export const RouteForOnlyNotAuthenticated = () => {
+  const { user } = useAuth();
+  if (user?.data?.user) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <Outlet />;
+};
 
 export const Loader = () => {
   return (
