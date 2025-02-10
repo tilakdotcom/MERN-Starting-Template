@@ -42,3 +42,7 @@ export const sessionRequest = async (): Promise<TSession[]> => {
 export const deleteSessionRequest = async (id: string) => {
   return await API.delete(`/session/${id}`);
 };
+
+export const refreshTokenRequest = async() => {
+  return await API.get("/auth/refresh");
+}
