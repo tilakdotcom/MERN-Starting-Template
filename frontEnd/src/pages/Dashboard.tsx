@@ -20,19 +20,22 @@ export default function UserDashboard() {
     onSettled: () => {
       queryClient.clear();
       successToast("Logged out successfully");
-      navigate("/login"); // Redirect to login page after logout
+      navigate("/login");
     },
   });
+
   return (
-    <div className="min-h-screen bg-gray-100 flex">
-      <aside className="w-1/4 bg-green-800 p-6">
-        <h2 className="text-2xl font-bold text-white">Dashboard</h2>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white flex">
+      <aside className="w-1/4 bg-gray-800 p-6 shadow-2xl">
+        <h2 className="text-3xl font-bold text-white border-b-2 border-blue-500 pb-2">Dashboard</h2>
         <nav className="mt-8">
           <ul>
             <li className="mb-4">
               <button
                 onClick={() => setActive("home")}
-                className="text-gray-200 hover:text-white text-lg block"
+                className={`text-lg block p-3 rounded-lg font-semibold transition-all ${
+                  active === "home" ? "bg-blue-600 text-white shadow-xl" : "text-gray-300 hover:bg-blue-500 hover:text-white"
+                }`}
               >
                 Home
               </button>
@@ -40,7 +43,9 @@ export default function UserDashboard() {
             <li className="mb-4">
               <button
                 onClick={() => setActive("session")}
-                className="text-gray-200 hover:text-white text-lg block"
+                className={`text-lg block p-3 rounded-lg font-semibold transition-all ${
+                  active === "session" ? "bg-blue-600 text-white shadow-xl" : "text-gray-300 hover:bg-blue-500 hover:text-white"
+                }`}
               >
                 Sessions
               </button>
@@ -48,7 +53,7 @@ export default function UserDashboard() {
             <li>
               <button
                 onClick={() => logout()}
-                className="text-gray-200 hover:text-white text-lg block"
+                className="text-lg block p-3 mt-4 rounded-lg text-red-400 hover:bg-red-600 hover:text-white transition-all font-semibold"
               >
                 Logout
               </button>
@@ -56,7 +61,7 @@ export default function UserDashboard() {
           </ul>
         </nav>
       </aside>
-      <main className="w-3/4 p-8">
+      <main className="w-3/4 p-10">
         {active === "home" && <UserSection />}
         {active === "session" && <SessionsList />}
       </main>
@@ -70,30 +75,24 @@ const UserSection = () => {
     mutationFn: verifyEmailSend,
     onSettled: () => {
       queryClient.clear();
-      successToast("check your email box");
+      successToast("Check your email inbox.");
     },
   });
   return (
-    <>
-      <h1 className="text-3xl font-bold text-gray-800 text-center py-4">
-        Welcome, {user?.data.user}
+    <div className="bg-gray-700 p-8 rounded-lg shadow-md">
+      <h1 className="text-4xl font-bold text-center py-6">
+        Welcome, {user?.data.user || "Guest"}
       </h1>
-      <div
-        className="py-5 text-center
-      "
-      >
+      <div className="py-5 text-center">
         {user?.data.verifiedEmail ? (
-          <div className="bg-green-500 rounded-xl p-2 text-white ">
-            Your email is verified. You can manage your profile, change
-            settings, and more.
+          <div className="bg-green-600 rounded-xl p-4 text-white shadow-lg">
+            Your email is verified. Enjoy full access to your profile.
           </div>
         ) : (
-          <div className="bg-red-500 rounded-xl p-2">
-            Your email is not verified. Please check your email for the
-            verification link or contact support if you have questions.
-            <br />
+          <div className="bg-red-600 rounded-xl p-4 shadow-md">
+            <p>Your email is not verified. Please verify your email.</p>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded-xl mt-4"
+              className="bg-blue-500 hover:bg-blue-700 text-white text-sm py-2 px-5 rounded-xl mt-4 transition"
               onClick={() => verifyEmailRequest()}
             >
               Verify Email
@@ -101,13 +100,12 @@ const UserSection = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
 const SessionsList = () => {
   const { sessions } = useSessions();
-
   const { mutate: deleteSession, isPending } = useMutation({
     mutationFn: deleteSessionRequest,
     onSuccess: () => {
@@ -121,52 +119,41 @@ const SessionsList = () => {
     },
   });
 
-  console.log(sessions);
-
-  const handleOnDeleteSession = (id: string) => {
-    deleteSession(id);
-  };
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Sessions</h2>
+    <div className="bg-gray-700 shadow-md rounded-lg p-6">
+      <h2 className="text-2xl font-bold mb-6">Active Sessions</h2>
       {sessions.length > 0 ? (
-        <ul className="divide-y divide-gray-200">
+        <ul className="divide-y divide-gray-600">
           {sessions.map((session: TSession, index: number) => {
             const current = !!session.isCurrect;
             return (
               <li
                 key={index}
                 className={`py-4 flex justify-between items-center ${
-                  current ? " bg-emerald-300" : ""
-                } p-3 rounded-xl`}
+                  current ? "bg-blue-600" : ""
+                } p-4 rounded-lg`}
               >
                 <div>
-                  <p className="text-xs font-medium text-gray-900">
-                    {session.userAgent}
-                  </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm font-semibold text-gray-200">{session.userAgent}</p>
+                  <p className="text-xs text-gray-400">
                     {new Date(session.createdAt).toLocaleString("en-US")}
                   </p>
                 </div>
-                {current ? (
-                  ""
-                ) : (
-                  <div className="flex space-x-4">
-                    <button
-                      disabled={isPending || current}
-                      className="text-red-600 font-extrabold cursor-pointer hover:text-red-800 transition"
-                      onClick={() => handleOnDeleteSession(session._id)}
-                    >
-                      &#10005;
-                    </button>
-                  </div>
+                {!current && (
+                  <button
+                    disabled={isPending}
+                    className="text-red-500 font-bold hover:text-red-700 transition"
+                    onClick={() => deleteSession(session._id)}
+                  >
+                    Delete
+                  </button>
                 )}
               </li>
             );
           })}
         </ul>
       ) : (
-        <p className="text-gray-500">No sessions available.</p>
+        <p className="text-gray-400">No active sessions available.</p>
       )}
     </div>
   );
