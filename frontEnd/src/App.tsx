@@ -21,8 +21,11 @@ export default function App() {
         <Route path="/" element={<RouteForOnlyNotAuthenticated />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />{" "}
-          <Route path="/reset-password/:token" element={<VerifyAndPasswordPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/reset-password/:token"
+            element={<VerifyAndPasswordPage />}
+          />
           <Route path="/reset-password" element={<ResetPasswordLinkPage />} />
         </Route>
         <Route path="/email-verify/:code" element={<VerifyEmailPage />} />

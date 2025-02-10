@@ -19,14 +19,11 @@ API.interceptors.response.use(
   (response) => response.data,
   async function (error) {
     if (!error.response) {
-      console.error("Network error", error);
       return Promise.reject(error);
     }
-    console.log("error in response", error);
     const originalRequest = error.config;
 
     const { status, data } = error.response;
-    console.log("error in response", error);
     if (
       status === 401 &&
       data.errorCode === "INVALID_ACCCESS_TOKEN" &&
@@ -34,12 +31,11 @@ API.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        console.log("i am inside the wrong state ");
         await refreshTokenRequest();
         return API(originalRequest);
       } catch (refreshTokenError) {
         queryClient.clear();
-        console.log("error in refresh token request", refreshTokenError);
+        throw refreshTokenError;
       }
     }
     return Promise.reject(error);

@@ -15,19 +15,21 @@ import { passwordSchema } from "@/schemas/passwordSchma";
 import { useMutation } from "@tanstack/react-query";
 import { resetPasswordRequest } from "@/lib/api";
 import { errorToast, successToast } from "@/lib/toast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function VerifyAndPasswordPage() {
   const params = useParams();
+  const navigate = useNavigate();
 
   const {
     mutate: resetPassword,
     isPending,
     isError,
-    error
+    error,
   } = useMutation({
     mutationFn: resetPasswordRequest,
     onSuccess: () => {
+      navigate("/login");
       successToast("Password reset Successfully");
     },
   });
