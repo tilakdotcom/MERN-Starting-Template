@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
-import { errorToast, successToast } from "@/lib/toast";
+import { successToast } from "@/lib/toast";
 import { signupSchma } from "@/schemas/signupSchema";
 import { useMutation } from "@tanstack/react-query";
 import { signupRequest } from "@/lib/api";
@@ -34,12 +34,14 @@ export default function SignupPage() {
   });
 
   if (isError) {
-    errorToast(error?.message || "Signup Failed!");
+    // errorToast(error?.message || "Signup Failed!");
+    console.log(error)
   }
 
   const form = useForm<z.infer<typeof signupSchma>>({
     resolver: zodResolver(signupSchma),
     defaultValues: {
+      username:"",
       email: "",
       password: "",
     },
@@ -61,6 +63,27 @@ export default function SignupPage() {
               Sign Up
             </h2>
             <p className="text-center text-green-200">Create your account</p>
+
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="block text-sm font-medium text-green-100">
+                    Username
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      autoComplete="current-username"
+                      className="w-full px-4 py-2 rounded-md bg-green-900 text-green-100 border border-green-700 focus:ring-2 focus:ring-green-400 focus:outline-none"
+                      placeholder="Enter your username"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}

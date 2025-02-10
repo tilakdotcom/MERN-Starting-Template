@@ -8,7 +8,7 @@ export default function Protected() {
   if (isLoading) {
     return <Loader />;
   }
-  if (!user) {
+  if (!user?.user) {
     return (
       <Navigate
         to="/login"

@@ -76,3 +76,11 @@ export const userVerifyEmailHandler = asyncHandler(async (req, res) => {
     data: user,
   });
 });
+
+export const userAccessHandler = asyncHandler(async (req, res) => {
+  const userId = req.userId;
+  return res.status(OK).json({
+    message: "Access granted",
+    data: userId,
+  });
+});

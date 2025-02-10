@@ -18,7 +18,13 @@ const API: AxiosInstance = axios.create(options);
 API.interceptors.response.use(
   (response) => response.data,
   async function (error) {
-    const originalRequest = error.congif;
+    if (!error.response) {
+      console.error("Network error", error);
+      return Promise.reject(error);
+    }
+    console.log("error in response", error);
+    const originalRequest = error.config;
+
     const { status, data } = error.response;
     console.log("error in response", error);
     if (
