@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSessions from "@/hooks/useSesstions";
-import {  useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function UserDashboard() {
   const [active, setActive] = useState("home");
@@ -66,24 +66,24 @@ const UserSection = () => {
   return (
     <>
       <h1 className="text-3xl font-bold text-gray-800 text-center py-4">
-        Welcome, User
+        Welcome, {user?.data.user}
       </h1>
-      <p
+      <div
         className="py-5 text-center
       "
       >
-        {user?.user.emailVerified ? (
-          <span className="bg-green-500 rounded-xl p-2 text-white ">
+        {user?.data.verifiedEmail ? (
+          <div className="bg-green-500 rounded-xl p-2 text-white ">
             Your email is verified. You can manage your profile, change
             settings, and more.
-          </span>
+          </div>
         ) : (
-          <span className="bg-red-500 rounded-xl p-2">
+          <div className="bg-red-500 rounded-xl p-2">
             Your email is not verified. Please check your email for the
             verification link or contact support if you have questions.
-          </span>
+          </div>
         )}
-      </p>
+      </div>
     </>
   );
 };
@@ -131,16 +131,19 @@ const SessionsList = () => {
                     {new Date(session.createdAt).toLocaleString("en-US")}
                   </p>
                 </div>
-               { current ? "" : <div className="flex space-x-4">
-                  
-                  <button
-                    disabled={isPending || current}
-                    className="text-red-600 font-extrabold cursor-pointer hover:text-red-800 transition"
-                    onClick={() => handleOnDeleteSession(session._id)}
-                  >
-                    &#10005;
-                  </button>
-                </div>}
+                {current ? (
+                  ""
+                ) : (
+                  <div className="flex space-x-4">
+                    <button
+                      disabled={isPending || current}
+                      className="text-red-600 font-extrabold cursor-pointer hover:text-red-800 transition"
+                      onClick={() => handleOnDeleteSession(session._id)}
+                    >
+                      &#10005;
+                    </button>
+                  </div>
+                )}
               </li>
             );
           })}
