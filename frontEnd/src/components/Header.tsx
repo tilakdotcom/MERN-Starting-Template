@@ -7,7 +7,7 @@ const Header: React.FC = () => {
     console.log("logged out from");
   }
   return (
-    <header className="bg-green-600 text-white py-4 px-6 md:px-12 flex items-center justify-between">
+    <header className="bg-green-600 text-white py-4 px-6 md:px-12 flex items-center justify-between h-20 w-full">
       <h1 className="text-2xl font-bold">My App</h1>
       {!auth && (
         <button
